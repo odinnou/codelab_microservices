@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  catalogue-api:
+    image: catalogue-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Catalogue/Catalogue.API/Dockerfile
