@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalogue.API", "src\Servic
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{26117F28-46B3-4BC3-865E-6FE28B6E935C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panier.API", "src\Services\Panier\Panier.API\Panier.API.csproj", "{580AB7CB-9AFE-4F59-91E7-2BA04DDED940}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panier.API", "src\Services\Panier\Panier.API\Panier.API.csproj", "{580AB7CB-9AFE-4F59-91E7-2BA04DDED940}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
