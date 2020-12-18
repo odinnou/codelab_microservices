@@ -21,7 +21,7 @@ namespace Panier.API.Controllers
         }
 
         /*
-         * curl -X GET 'http://localhost:{port}/panier/{stateless}/fanboy'
+         * curl -X GET 'http://localhost:{port}/panier/stateless/fanboy'
          */
         [HttpGet("{cacheMode:required}/{userId:required}")]
         public async Task<IEnumerable<PanierItem>> FetchPanierItems(CacheMode cacheMode, string userId)

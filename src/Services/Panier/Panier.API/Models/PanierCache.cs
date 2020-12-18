@@ -4,6 +4,7 @@ namespace Panier.API.Models
 {
     /// <summary>
     /// Ne doit JAMAIS être fait, c'est vraiment pour simuler une resource non partagée
+    /// Je n'ai pas implémenté le système de TTL (donné éphémère)
     /// </summary>
     public class PanierCache
     {
