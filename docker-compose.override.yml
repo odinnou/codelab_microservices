@@ -1,6 +1,11 @@
 version: '3.4'
 
 services:
+  cache-data:
+    restart: always
+    ports:
+      - "6379:6379"
+
   catalogue-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -13,3 +18,15 @@ services:
       - AppSettings__ComplexItems__1__Password=password_2
     ports:
       - "37001:80"
+
+  panier-api-1:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "37002:80"
+
+  panier-api-2:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "37003:80"

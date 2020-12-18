@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Catalogue.API
+namespace Panier.API
 {
     public static class Program
     {

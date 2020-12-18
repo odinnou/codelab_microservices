@@ -214,4 +214,5 @@ samples/KeyManagement/FileSystem/dataprotectionkeys/
 samples/KeyManagement/FileSystem/signingkeys/
 
 # Custom
-API/API.xml
+*.API.xml
+launchSettings.json
