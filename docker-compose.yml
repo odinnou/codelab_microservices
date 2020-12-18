@@ -1,8 +1,27 @@
 version: '3.4'
 
 services:
+  cache-data:
+    image: redis
+
   catalogue-api:
     image: catalogue-api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Catalogue/Catalogue.API/Dockerfile
+
+  panier-api-1:
+    image: panier-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Panier/Panier.API/Dockerfile
+    depends_on:
+      - cache-data
+
+  panier-api-2:
+    image: panier-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Panier/Panier.API/Dockerfile
+    depends_on:
+      - cache-data
