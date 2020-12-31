@@ -5,7 +5,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Xunit;
 
-namespace Baker.UnitTests.Controllers
+namespace Catalogue.UnitTests.Controllers
 {
     public class DemoControllerTest
     {

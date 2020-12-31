@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Baker.UnitTests.Integration
+namespace Catalogue.UnitTests.Integration
 {
     public class DemoControllerIntegrationTest
     {
