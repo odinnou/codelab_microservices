@@ -1,0 +1,30 @@
+variables:
+    registryEndpoint: dockerhub
+trigger:
+  branches:
+    include:
+    - codelab/3-build
+  paths:
+    include:
+    - src/Services/Catalogue/*
+  tags:
+    include:
+      - '*'
+pr:
+  branches:
+    include:
+    - codelab/3-build
+  paths:
+    include:
+    - src/Services/Catalogue/*
+jobs:
+- template: ../buildimages.yml
+  parameters:
+    services: catalogue-api
+    registryEndpoint: $(registryEndpoint)
+    from: $(Build.SourcesDirectory)/deploy
+    to: $(Build.ArtifactStagingDirectory)/deploy
+    dockerFileLocation: Catalogue
+    dockerFileLocationPrefix: Services
+    dockerFileLocationSuffix: API
+    testInMain: true
