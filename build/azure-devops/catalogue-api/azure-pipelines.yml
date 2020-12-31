@@ -3,7 +3,7 @@ variables:
 trigger:
   branches:
     include:
-    - codelab/3-build
+    - origin/codelab/3-build
   paths:
     include:
     - src/Services/Catalogue/*
@@ -13,7 +13,7 @@ trigger:
 pr:
   branches:
     include:
-    - codelab/3-build
+    - origin/codelab/3-build
   paths:
     include:
     - src/Services/Catalogue/*
