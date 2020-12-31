@@ -1,0 +1,145 @@
+# build
+parameters:
+  services: ''
+  registryEndpoint: ''
+
+jobs:
+- job: BuildPullRequest
+  condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest')
+  pool:
+    vmImage: 'ubuntu-20.04'
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core sdk 5.0.x'
+    inputs:
+      version: 5.0.x
+  - task: NuGetToolInstaller@1
+    displayName: 'Use NuGet 5.4.0'
+    inputs:
+      versionSpec: 5.4.0
+      checkLatest: true
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet restore'
+    inputs:
+      command: restore
+      projects: '**/*.sln'
+      verbosityRestore: 'quiet'
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build'
+    inputs:
+      projects: '**/*.sln'
+      arguments: '--no-restore -v q'
+  - script: 'dotnet test ./src/codelab_microservices.sln -v m --no-build -l trx -r $(Agent.BuildDirectory)/results_sonar /p:CollectCoverage=true /p:Exclude=''[xunit.*]*'' /p:CoverletOutputFormat=''json%2copencover'' /p:CoverletOutput=$(Agent.BuildDirectory)/results_sonar/coverage /p:MergeWith=''$(Agent.BuildDirectory)/results_sonar/coverage.json'''
+    displayName: Tests
+  - task: mspremier.PostBuildCleanup.PostBuildCleanup-task.PostBuildCleanup@3
+    displayName: 'Clean Agent Directories'
+- job: BuildMainBranch
+  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
+  pool:
+    vmImage: 'ubuntu-20.04'
+  steps:
+  - task: Bash@3
+    displayName: 'Detect tag'
+    inputs:
+      targetType: 'inline'
+      script: |
+        #!/bin/bash
+
+        mkdir -p ${{ parameters.to }}
+
+        if [ $(Build.SourceBranchName) == "codelab/3-build" ]
+        then
+        tag="develop"
+        echo "##vso[task.setvariable variable=imageTag]$tag"
+        exit 0
+        else
+
+        branches=`git branch -r --contains $(Build.SourceVersion) | tr '\n' ' ' | sed 's/^[[:blank:]]*//;s/[[:blank:]]*$//' | sed 's/   /,/g'`
+
+        IFS=',' read -r -a array <<< "$branches"
+
+        for branch in "${array[@]}"
+        do
+        if [ "$branch" == "origin/main" ]
+        then
+        tag=$(Build.SourceBranchName)
+        fi
+        done
+
+        if [ -z ${tag+x} ]; then exit 1; else echo "var is set to '$tag'"; fi
+
+
+        fi
+
+        if [ `echo $tag | grep -o "\." | wc -l` -eq 1 ]
+        then
+        echo "##vso[task.setvariable variable=pushProd]yes"
+        echo $tag > ${{ parameters.to }}/version
+        elif [ `echo $tag | grep -o "\." | wc -l` -gt 1 ]
+        then
+        echo $tag > ${{ parameters.to }}/version
+        else
+        exit 1
+        fi
+
+        echo $tag
+        echo "##vso[task.setvariable variable=imageTag]$tag"    
+      failOnStderr: true
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core sdk 5.0.x'
+    inputs:
+      version: 5.0.x
+  - task: NuGetToolInstaller@1
+    displayName: 'Use NuGet 5.4.0'
+    inputs:
+      versionSpec: 5.4.0
+      checkLatest: true
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet restore'
+    inputs:
+      command: restore
+      projects: '**/*.sln'
+      verbosityRestore: 'quiet'
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build'
+    inputs:
+      projects: '**/*.sln'
+      arguments: '--no-restore -v q'
+  - script: 'dotnet test ./src/codelab_microservices.sln -v m --no-build -l trx -r $(Agent.BuildDirectory)/results_sonar /p:CollectCoverage=true /p:Exclude=''[xunit.*]*'' /p:CoverletOutputFormat=''json%2copencover'' /p:CoverletOutput=$(Agent.BuildDirectory)/results_sonar/coverage /p:MergeWith=''$(Agent.BuildDirectory)/results_sonar/coverage.json'''
+    displayName: Tests for codelab/3-build
+    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'codelab/3-build'))
+  - script: 'dotnet test ./src/codelab_microservices.sln -v m --no-build -l trx -r $(Agent.BuildDirectory)/results_sonar /p:CollectCoverage=true /p:Exclude=''[xunit.*]*'' /p:CoverletOutputFormat=''json%2copencover'' /p:CoverletOutput=$(Agent.BuildDirectory)/results_sonar/coverage /p:MergeWith=''$(Agent.BuildDirectory)/results_sonar/coverage.json'''
+    displayName: Tests for Main
+    condition: and(succeeded(), eq('${{ parameters.testInMain }}', true), ne(variables['Build.SourceBranchName'], 'codelab/3-build'))
+  - task: Docker@2
+    displayName: build
+    inputs:
+      containerRegistry: '${{ parameters.registryEndpoint }}'
+      command: build
+      buildContext: src
+      arguments: '-t ${{ parameters.registryEndpoint }}/${{ parameters.services }}:latest --file src/${{ parameters.dockerFileLocationPrefix }}/${{ parameters.dockerFileLocation }}/${{ parameters.dockerFileLocation }}.${{ parameters.dockerFileLocationSuffix }}/Dockerfile'
+  - task: Docker@2
+    displayName: 'Push the Docker image to Dockerhub'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryEndpoint: 'Docker Hub'
+      command: push
+      imageName: 'odinnou/${{ parameters.services }}:$(imageTag)'
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: ${{ parameters.from }}
+      targetFolder: ${{ parameters.to }}
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Build Artifact for codelab/3-build'
+    inputs:
+      pathtoPublish: ${{ parameters.to }}
+      artifactName: release
+    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'codelab/3-build'))
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Build Artifact for release'
+    inputs:
+      pathtoPublish: ${{ parameters.to }}
+      artifactName: release
+    condition: and(succeeded(), eq('${{ parameters.testInMain }}', true), ne(variables['Build.SourceBranchName'], 'codelab/3-build'))
+  - task: mspremier.PostBuildCleanup.PostBuildCleanup-task.PostBuildCleanup@3
+    displayName: 'Clean Agent Directories'

@@ -18,9 +18,9 @@ namespace Catalogue.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetConfiguration()
+        public AppSettings GetConfiguration()
         {
-            return new OkObjectResult(appSettings);
+            return appSettings;
         }
     }
 }
