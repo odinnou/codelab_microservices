@@ -31,8 +31,6 @@ jobs:
       arguments: '--no-restore -v q'
   - script: 'dotnet test ./src/codelab_microservices.sln -v m --no-build -l trx -r $(Agent.BuildDirectory)/results_sonar /p:CollectCoverage=true /p:Exclude=''[xunit.*]*'' /p:CoverletOutputFormat=''json%2copencover'' /p:CoverletOutput=$(Agent.BuildDirectory)/results_sonar/coverage /p:MergeWith=''$(Agent.BuildDirectory)/results_sonar/coverage.json'''
     displayName: Tests
-  - task: mspremier.PostBuildCleanup.PostBuildCleanup-task.PostBuildCleanup@3
-    displayName: 'Clean Agent Directories'
 - job: BuildMainBranch
   condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
   pool:
@@ -141,5 +139,3 @@ jobs:
       pathtoPublish: ${{ parameters.to }}
       artifactName: release
     condition: and(succeeded(), eq('${{ parameters.testInMain }}', true), ne(variables['Build.SourceBranchName'], 'codelab/3-build'))
-  - task: mspremier.PostBuildCleanup.PostBuildCleanup-task.PostBuildCleanup@3
-    displayName: 'Clean Agent Directories'
