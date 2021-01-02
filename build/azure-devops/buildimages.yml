@@ -116,7 +116,7 @@ jobs:
       dockerRegistryEndpoint: 'Docker Registry'
       command: build
       buildContext: .
-      arguments: '-t ${{ parameters.registryEndpoint }}/${{ parameters.services }}:latest --file src/${{ parameters.dockerFileLocationPrefix }}/${{ parameters.dockerFileLocation }}/${{ parameters.dockerFileLocation }}.${{ parameters.dockerFileLocationSuffix }}/Dockerfile'
+      arguments: '-t ${{ parameters.registryEndpoint }}/${{ parameters.services }}:$(imageTag) --file src/${{ parameters.dockerFileLocationPrefix }}/${{ parameters.dockerFileLocation }}/${{ parameters.dockerFileLocation }}.${{ parameters.dockerFileLocationSuffix }}/Dockerfile'
   - task: Docker@2
     displayName: 'Push the Docker image to Dockerhub'
     inputs:
