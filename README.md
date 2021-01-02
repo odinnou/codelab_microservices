@@ -27,4 +27,5 @@ dotnet build/test, docker build/push
 
 ```
 docker run --rm --name catalogue -e AppSettings__Ttl=1337 -d -p 8085:80 odinnou/catalogue-api:0.0.5
+curl -X GET 'http://localhost:8085/demo'
 ```
