@@ -112,7 +112,8 @@ jobs:
   - task: Docker@2
     displayName: build
     inputs:
-      containerRegistry: '${{ parameters.registryEndpoint }}'
+      containerregistrytype: 'Container Registry'
+      dockerRegistryEndpoint: 'Docker Registry'
       command: build
       buildContext: .
       arguments: '-t ${{ parameters.registryEndpoint }}/${{ parameters.services }}:latest --file src/${{ parameters.dockerFileLocationPrefix }}/${{ parameters.dockerFileLocation }}/${{ parameters.dockerFileLocation }}.${{ parameters.dockerFileLocationSuffix }}/Dockerfile'
@@ -120,9 +121,9 @@ jobs:
     displayName: 'Push the Docker image to Dockerhub'
     inputs:
       containerregistrytype: 'Container Registry'
-      dockerRegistryEndpoint: 'Docker Hub'
+      dockerRegistryEndpoint: 'Docker Registry'
       command: push
-      imageName: 'odinnou/${{ parameters.services }}:$(imageTag)'
+      imageName: '${{ parameters.registryEndpoint }}/${{ parameters.services }}:$(imageTag)'
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ parameters.from }}
