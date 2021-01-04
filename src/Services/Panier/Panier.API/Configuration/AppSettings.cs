@@ -1,8 +1,15 @@
-namespace Catalogue.API.Configuration
+namespace Panier.API.Configuration
 {
     public class AppSettings
     {
         public CacheConfiguration CacheConfiguration { get; set; }
+        public AuthorityConfiguration AuthorityConfiguration { get; set; }
+    }
+
+    public class AuthorityConfiguration
+    {
+        public string Authority { get; set; }
+        public string Audience { get; set; }
     }
 
     public class CacheConfiguration

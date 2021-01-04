@@ -1,4 +1,3 @@
-using Catalogue.API.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,13 +21,18 @@ namespace Panier.API
             AppSettings appSettings = new AppSettings();
             Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
 
+            services.AddAuthentications(appSettings);
             services.AddControllers();
             services.AddDependencies(appSettings);
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

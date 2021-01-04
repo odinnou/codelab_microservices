@@ -1,17 +1,16 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Panier.API.Infrastructure;
 using Panier.API.Models;
 using Panier.API.UseCases.PanierManager;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace Panier.API.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    [Produces(MediaTypeNames.Application.Json)]
-    public class PanierController : ControllerBase
+    [Authorize(ONLY_CLIENT_POLICY)]
+    public class PanierController : CommonController
     {
         private readonly Dictionary<CacheMode, IPanierManager> iPanierManagers;
 
@@ -21,16 +20,16 @@ namespace Panier.API.Controllers
         }
 
         /*
-         * curl -X GET 'http://localhost:{port}/panier/stateless/fanboy'
+         * curl -X GET 'http://localhost:{port}/panier/stateless' -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtp..........'
          */
-        [HttpGet("{cacheMode:required}/{userId:required}")]
-        public async Task<IEnumerable<PanierItem>> FetchPanierItems(CacheMode cacheMode, string userId)
+        [HttpGet("{cacheMode:required}")]
+        public async Task<IEnumerable<PanierItem>> FetchPanierItems(CacheMode cacheMode)
         {
-            return await iPanierManagers[cacheMode].Fetch(userId);
+            return await iPanierManagers[cacheMode].Fetch();
         }
 
         /*
-         * curl -X POST 'http://localhost:{port}/panier/stateless' -H 'Content-Type: application/json' --data-raw '{"userId":"fanboy","product":"PS5"}'
+         * curl -X POST 'http://localhost:{port}/panier/stateless' -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtp..........' -H 'Content-Type: application/json' --data-raw '{"product":"PS5"}'
          */
         [HttpPost("{cacheMode:required}")]
         public async Task<IEnumerable<PanierItem>> AppendPanierItem(CacheMode cacheMode, PanierItem panierItem)

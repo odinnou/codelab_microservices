@@ -1,6 +1,6 @@
-using Catalogue.API.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Panier.API.Models;
+using Panier.API.UseCases;
 using Panier.API.UseCases.PanierManager;
 
 namespace Panier.API.Configuration
@@ -25,6 +25,7 @@ namespace Panier.API.Configuration
 
             services.AddTransient<IPanierManager, StatelessPanierManager>();
             services.AddTransient<IPanierManager, StatefulPanierManager>();
+            services.AddTransient<IClaimAccessor, ClaimAccessor>();
 
             #endregion
 

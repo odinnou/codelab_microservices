@@ -1,7 +1,7 @@
-using Catalogue.API.Configuration;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Panier.API.Configuration;
 using Panier.API.Models;
 using System;
 using System.Collections.Generic;
@@ -13,10 +13,12 @@ namespace Panier.API.UseCases.PanierManager
     {
         private readonly IDistributedCache iDistributedCache;
         private readonly DistributedCacheEntryOptions distributedCacheEntryOptions;
+        private readonly IClaimAccessor iClaimAccessor;
 
-        public StatelessPanierManager(IDistributedCache iDistributedCache, IOptions<AppSettings> appSettings)
+        public StatelessPanierManager(IDistributedCache iDistributedCache, IOptions<AppSettings> appSettings, IClaimAccessor iClaimAccessor)
         {
             this.iDistributedCache = iDistributedCache;
+            this.iClaimAccessor = iClaimAccessor;
             distributedCacheEntryOptions = new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(appSettings.Value.CacheConfiguration.TimeToLive) };
         }
 
@@ -24,17 +26,19 @@ namespace Panier.API.UseCases.PanierManager
 
         public async Task<List<PanierItem>> Append(PanierItem panierItem)
         {
-            List<PanierItem> items = await Fetch(panierItem.UserId);
+            List<PanierItem> items = await Fetch();
 
             items.Add(panierItem);
 
-            await iDistributedCache.SetStringAsync(panierItem.UserId, JsonConvert.SerializeObject(items), distributedCacheEntryOptions);
+            string userId = iClaimAccessor.GetUidFromClaims();
+            await iDistributedCache.SetStringAsync(userId, JsonConvert.SerializeObject(items), distributedCacheEntryOptions);
 
             return items;
         }
 
-        public async Task<List<PanierItem>> Fetch(string userId)
+        public async Task<List<PanierItem>> Fetch()
         {
+            string userId = iClaimAccessor.GetUidFromClaims();
             string serialized = await iDistributedCache.GetStringAsync(userId);
 
             if (string.IsNullOrWhiteSpace(serialized))
