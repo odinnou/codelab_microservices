@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Panier.API.Controllers
 {
-    [Authorize(ONLY_CLIENT_POLICY)]
+    [Authorize(ONLY_CLIENT_POLICY)] // oblige le user_type à client et conserve la nécessité d'avoir validé son email
     public class PanierController : CommonController
     {
         private readonly Dictionary<CacheMode, IPanierManager> iPanierManagers;

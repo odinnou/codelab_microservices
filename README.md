@@ -43,3 +43,14 @@ curl -X GET 'http://localhost:{port}/check-access/panier-admin' -H 'Authorizatio
 curl -X GET 'http://localhost:{port}/check-access/client' -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtp..........'
 curl -X GET 'http://localhost:{port}/check-access/tout-le-monde'
 ```
+
+Les comptes utilisateurs sont les suivants : 
+
+email : client_email_verifie / admin_email_non_verifie / client_email_non_verifie / panier_admin_email_verifie / non_panier_admin_email_verifie ..... @ineat.fr
+mot de passe : test123
+
+```
+curl -L -X POST 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCfZd9kOFERsYZBvk_30LeiUcsyEAzoyUw' \
+-H 'Content-Type: application/json' \
+--data-raw '{"email":"client_email_verifie@ineat.fr","password":"test123","returnSecureToken":true}'
+```
