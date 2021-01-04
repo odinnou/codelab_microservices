@@ -7,28 +7,34 @@ namespace Panier.API.UseCases.PanierManager
     public class StatefulPanierManager : IPanierManager
     {
         private readonly PanierCache panierCache;
+        private readonly IClaimAccessor iClaimAccessor;
 
-        public StatefulPanierManager(PanierCache panierCache)
+        public StatefulPanierManager(PanierCache panierCache, IClaimAccessor iClaimAccessor)
         {
             this.panierCache = panierCache;
+            this.iClaimAccessor = iClaimAccessor;
         }
 
         public CacheMode CacheMode => CacheMode.Stateful;
 
         public Task<List<PanierItem>> Append(PanierItem panierItem)
         {
-            if (!panierCache.Content.ContainsKey(panierItem.UserId))
+            string userId = iClaimAccessor.GetUidFromClaims();
+
+            if (!panierCache.Content.ContainsKey(userId))
             {
-                panierCache.Content.Add(panierItem.UserId, new List<PanierItem>());
+                panierCache.Content.Add(userId, new List<PanierItem>());
             }
 
-            panierCache.Content[panierItem.UserId].Add(panierItem);
+            panierCache.Content[userId].Add(panierItem);
 
-            return Fetch(panierItem.UserId);
+            return Fetch();
         }
 
-        public Task<List<PanierItem>> Fetch(string userId)
+        public Task<List<PanierItem>> Fetch()
         {
+            string userId = iClaimAccessor.GetUidFromClaims();
+
             return Task.FromResult(panierCache.Content.ContainsKey(userId) ? panierCache.Content[userId] : new List<PanierItem>());
         }
     }

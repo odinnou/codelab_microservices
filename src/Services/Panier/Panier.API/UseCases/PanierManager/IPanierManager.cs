@@ -7,7 +7,7 @@ namespace Panier.API.UseCases.PanierManager
     public interface IPanierManager
     {
         CacheMode CacheMode { get; }
-        Task<List<PanierItem>> Fetch(string userId);
+        Task<List<PanierItem>> Fetch();
         Task<List<PanierItem>> Append(PanierItem panierItem);
     }
 }
