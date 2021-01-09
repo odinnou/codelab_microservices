@@ -1,14 +1,11 @@
 using Catalogue.API.Configuration;
+using Catalogue.API.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Net.Mime;
 
 namespace Catalogue.API.Controllers
 {
-    [Route("[controller]")]
-    [ApiController]
-    [Produces(MediaTypeNames.Application.Json)]
-    public class DemoController : ControllerBase
+    public class DemoController : CommonController
     {
         private readonly AppSettings appSettings;
 

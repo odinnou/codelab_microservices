@@ -1,6 +1,16 @@
 version: '3.4'
 
 services:
+  sql-data:
+    restart: always
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - formation-sqldata:/var/lib/postgresql/data
+
   cache-data:
     restart: always
     ports:
@@ -9,13 +19,6 @@ services:
   catalogue-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - AppSettings__DbConnection=test_db
-      - AppSettings__ApiKeys__0=test_1
-      - AppSettings__ApiKeys__1=test_2
-      - AppSettings__ComplexItems__0__Identifier=identifier_1
-      - AppSettings__ComplexItems__0__Password=password_1
-      - AppSettings__ComplexItems__1__Identifier=identifier_2
-      - AppSettings__ComplexItems__1__Password=password_2
     ports:
       - "37001:80"
 
@@ -30,3 +33,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "37003:80"
+
+volumes:
+  formation-sqldata:
+    external: true

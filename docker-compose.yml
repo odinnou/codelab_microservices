@@ -4,11 +4,16 @@ services:
   cache-data:
     image: redis
 
+  sql-data:
+    image: postgres
+
   catalogue-api:
     image: catalogue-api:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Catalogue/Catalogue.API/Dockerfile
+    depends_on:
+      - sql-data
 
   panier-api-1:
     image: panier-api:${TAG:-latest}

@@ -1,4 +1,5 @@
 using Catalogue.API.Configuration;
+using Catalogue.API.Infrastructure.Migrations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,12 @@ namespace Catalogue.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
+
+            AppSettings appSettings = new AppSettings();
+            Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
+
+            services.AddDependencies(appSettings);
+            services.AddHostedService<MigratorHostedService>();
 
             services.AddControllers();
         }

@@ -1,6 +1,11 @@
 using Catalogue.API;
+using Catalogue.API.Configuration;
+using Catalogue.API.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalogue.UnitTests.Configuration
 {
@@ -10,15 +15,19 @@ namespace Catalogue.UnitTests.Configuration
         {
             return new WebHostBuilder()
                 .UseContentRoot(".")
-                .UseEnvironment("test")
+                .UseEnvironment(AppSettings.TEST_ENVIRONMENT)
         .ConfigureAppConfiguration((builderContext, config) =>
         {
             config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
         })
         .ConfigureServices(services =>
         {
-            // AVANT le ConfigureServices du Startup
-        }).UseStartup<Startup>();
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            services.AddDbContext<CatalogueContext>(options => options.UseLazyLoadingProxies().UseSqlite(connection).UseSnakeCaseNamingConvention());
+        })
+                .UseStartup<Startup>();
         }
     }
 }

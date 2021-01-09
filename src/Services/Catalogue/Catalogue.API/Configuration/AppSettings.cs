@@ -4,6 +4,8 @@ namespace Catalogue.API.Configuration
 {
     public class AppSettings
     {
+        public const string TEST_ENVIRONMENT = "test";
+
         public string Title { get; set; }
         public string DbConnection { get; set; }
         public int Ttl { get; set; }
