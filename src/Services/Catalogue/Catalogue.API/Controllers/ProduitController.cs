@@ -28,7 +28,7 @@ namespace Catalogue.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(Dictionary<string, ICollection<Produit>>), Status200OK)]
         [ProducesResponseType(typeof(void), Status500InternalServerError)]
-        public async Task<Dictionary<string, ICollection<Produit>>> Get()
+        public async Task<Dictionary<string, ICollection<Produit>>> GetGroupByFamilles()
         {
             return await iProduitFetcher.GroupByFamilles();
         }

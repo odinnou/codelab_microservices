@@ -43,7 +43,7 @@ namespace Catalogue.API.Infrastructure.Migrations
             }
         }
 
-        private static IEnumerable<Produit> BuildProduits()
+        public static IEnumerable<Produit> BuildProduits()
         {
             IEnumerable<Famille> familles = new List<Famille> {
                 new Famille { Nom = "Chaussures Homme" },
