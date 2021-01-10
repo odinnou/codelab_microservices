@@ -54,3 +54,7 @@ curl -L -X POST 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPa
 -H 'Content-Type: application/json' \
 --data-raw '{"email":"client_email_verifie@ineat.fr","password":"test123","returnSecureToken":true}'
 ```
+
+## 5 - Chaque service, possède ses propres données
+
+Ajout d'une interface Swagger via un "Building Blocks" (en condition réel, il devrait être déposé sur un nuget privé)

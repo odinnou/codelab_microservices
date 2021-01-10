@@ -1,8 +1,10 @@
 using Catalogue.API.Configuration;
 using Catalogue.API.Infrastructure.Migrations;
+using Common.API.Documentation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Catalogue.API
 {
@@ -22,14 +24,20 @@ namespace Catalogue.API
             AppSettings appSettings = new AppSettings();
             Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
 
+            services.AddControllers();
+
+            services.AddSwagger(appSettings.DeployedVersion);
             services.AddDependencies(appSettings);
             services.AddHostedService<MigratorHostedService>();
-
-            services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IOptions<AppSettings> appSettings)
         {
+            if (appSettings.Value.EnableSwagger)
+            {
+                app.UseSwaggerConfig(appSettings.Value.DeployedVersion, appSettings.Value.RoutePrefix, appSettings.Value.HttpRequestScheme);
+            }
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

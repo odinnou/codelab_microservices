@@ -10,13 +10,16 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1591;CS8618</NoWarn>
+    <DocumentationFile>C:\DEV\FORMATION\codelab_microservices\src\Services\Catalogue\Catalogue.API\Catalogue.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702;1591;CS8618</NoWarn>
+    <DocumentationFile>C:\DEV\FORMATION\codelab_microservices\src\Services\Catalogue\Catalogue.API\Catalogue.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="32.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="EFCore.NamingConventions" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.1" />
@@ -25,6 +28,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Common\Common.API\Common.API.csproj" />
   </ItemGroup>
 
 </Project>

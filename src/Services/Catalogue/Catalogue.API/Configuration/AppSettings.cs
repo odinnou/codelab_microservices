@@ -11,6 +11,10 @@ namespace Catalogue.API.Configuration
         public int Ttl { get; set; }
         public List<string> ApiKeys { get; set; }
         public List<ComplexItem> ComplexItems { get; set; }
+        public string RoutePrefix { get; set; }
+        public bool EnableSwagger { get; set; }
+        public string HttpRequestScheme { get; set; }
+        public string DeployedVersion { get; set; }
     }
 
     public class ComplexItem

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Catalogue.API.Repositories
 {
-    public interface IProduitRepository
+    public interface IFamilleRepository
     {
-        Task<IEnumerable<Produit>> GetAll();
+        Task<IEnumerable<Famille>> GetAll();
     }
 }

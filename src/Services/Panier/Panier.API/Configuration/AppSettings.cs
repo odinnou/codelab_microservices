@@ -4,6 +4,10 @@ namespace Panier.API.Configuration
     {
         public CacheConfiguration CacheConfiguration { get; set; }
         public AuthorityConfiguration AuthorityConfiguration { get; set; }
+        public string RoutePrefix { get; set; }
+        public bool EnableSwagger { get; set; }
+        public string HttpRequestScheme { get; set; }
+        public string DeployedVersion { get; set; }
     }
 
     public class AuthorityConfiguration

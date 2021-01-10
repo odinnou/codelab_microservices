@@ -24,7 +24,7 @@ namespace Catalogue.API.Configuration
 
             #region Repositories
 
-            services.AddTransient<IProduitRepository, ProduitRepository>();
+            services.AddTransient<IFamilleRepository, FamilleRepository>();
 
             #endregion
 

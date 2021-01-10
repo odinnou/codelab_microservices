@@ -1,3 +1,4 @@
+using Bogus;
 using Catalogue.API.Configuration;
 using Catalogue.API.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -24,31 +25,46 @@ namespace Catalogue.API.Infrastructure.Migrations
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            // En SQLITE il ne faut pas faire de MigrateAsync, si on veut être plus proche de la vérité il faut passer sur du TestContainer : https://github.com/HofmeisterAn/dotnet-testcontainers
             if (!AppSettings.TEST_ENVIRONMENT.Equals(webHostEnvironment.EnvironmentName, StringComparison.OrdinalIgnoreCase))
             {
                 using IServiceScope scope = serviceProvider.CreateScope();
                 CatalogueContext catalogueContext = scope.ServiceProvider.GetRequiredService<CatalogueContext>();
 
-                await catalogueContext.Database.MigrateAsync();
+                await catalogueContext.Database.MigrateAsync(default);
 
-                if (!await catalogueContext.Produits.AnyAsync())
+                // Pour alimenter en fake data la démo
+                if (!await catalogueContext.Familles.AnyAsync(default))
                 {
-                    catalogueContext.AddRange(BuildFamilles());
-                    await catalogueContext.SaveChangesAsync();
+                    catalogueContext.AddRange(BuildProduits());
+
+                    await catalogueContext.SaveChangesAsync(default);
                 }
             }
         }
-        private IEnumerable<Famille> BuildFamilles()
+
+        private static IEnumerable<Produit> BuildProduits()
         {
-            return null;
-            //string[] logins = new[] { "Odinnou", "Cgt", "Tazacban", "Dashell", "Cwep", "16ar" };
+            IEnumerable<Famille> familles = new List<Famille> {
+                new Famille { Nom = "Chaussures Homme" },
+                new Famille { Nom = "Chaussures Femme" },
+                new Famille { Nom = "Chaussures Enfant" },
+                new Famille { Nom = "Vestes Homme" },
+                new Famille { Nom = "Vestes Femme" },
+                new Famille { Nom = "Vestes Enfant" },
+                new Famille { Nom = "Manteaux Homme" },
+                new Famille { Nom = "Manteaux Femme" },
+                new Famille { Nom = "Manteaux Enfant" },
+                new Famille { Nom = "Accessoires Homme" },
+                new Famille { Nom = "Accessoires Femme" },
+                new Famille { Nom = "Accessoires Enfant" }
+            };
 
-            //Faker<ChatEntry> faker = new Faker<ChatEntry>()
-            //                .RuleFor(entry => entry.DateCreated, fake => fake.Date.Past())
-            //                .RuleFor(entry => entry.Message, fake => fake.Lorem.Sentences(2))
-            //                .RuleFor(entry => entry.Login, fake => fake.PickRandom(logins));
-
-            //return faker.Generate(2000);
+            return new Faker<Produit>()
+                .RuleFor(famille => famille.Famille, fake => fake.PickRandom(familles))
+                .RuleFor(famille => famille.Libelle, fake => fake.Commerce.ProductName())
+                .RuleFor(famille => famille.Reference, fake => fake.Commerce.Ean13())
+                .Generate(10000);
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

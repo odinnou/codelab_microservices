@@ -17,7 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Panier", "Panier", "{BE295B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalogue.UnitTests", "src\Services\Catalogue\Catalogue.UnitTests\Catalogue.UnitTests.csproj", "{81233226-CE4B-4E65-919F-7FD7B5599BA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panier.UnitTests", "src\Services\Panier\Panier.UnitTests\Panier.UnitTests.csproj", "{C6795606-BC32-4280-AE73-23A131F9145C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panier.UnitTests", "src\Services\Panier\Panier.UnitTests\Panier.UnitTests.csproj", "{C6795606-BC32-4280-AE73-23A131F9145C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{3E3493BF-CB85-4492-A518-9D165B958CC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E770124F-A436-4CD8-9432-48833F8A776F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.API", "src\BuildingBlocks\Common\Common.API\Common.API.csproj", "{83EFAFF7-56CE-4D66-8A91-BF0E125E1BE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +51,10 @@ Global
 		{C6795606-BC32-4280-AE73-23A131F9145C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6795606-BC32-4280-AE73-23A131F9145C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6795606-BC32-4280-AE73-23A131F9145C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83EFAFF7-56CE-4D66-8A91-BF0E125E1BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83EFAFF7-56CE-4D66-8A91-BF0E125E1BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83EFAFF7-56CE-4D66-8A91-BF0E125E1BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83EFAFF7-56CE-4D66-8A91-BF0E125E1BE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +66,8 @@ Global
 		{BE295B52-2D7D-4D8C-A70A-571AC25CAE66} = {FA2F0530-BB9B-4BAE-ADE7-1B44F0AEB55A}
 		{81233226-CE4B-4E65-919F-7FD7B5599BA7} = {97C4C472-81C7-4832-A35E-657117DC5B90}
 		{C6795606-BC32-4280-AE73-23A131F9145C} = {BE295B52-2D7D-4D8C-A70A-571AC25CAE66}
+		{E770124F-A436-4CD8-9432-48833F8A776F} = {3E3493BF-CB85-4492-A518-9D165B958CC8}
+		{83EFAFF7-56CE-4D66-8A91-BF0E125E1BE8} = {E770124F-A436-4CD8-9432-48833F8A776F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBAB053F-913F-4915-ABC4-1B7E995A76E8}

@@ -6,6 +6,6 @@ namespace Catalogue.API.UseCases
 {
     public interface IProduitFetcher
     {
-        Task<IDictionary<Famille, IEnumerable<Produit>>> GroupByFamilles();
+        Task<Dictionary<string, ICollection<Produit>>> GroupByFamilles();
     }
 }

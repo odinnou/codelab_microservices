@@ -3,9 +3,10 @@ variables:
 trigger:
   branches:
     include:
-    - codelab/3-build
+    - main
   paths:
     include:
+    - src/BuildingBlocks/Common/*
     - src/Services/Catalogue/*
   tags:
     include:
@@ -13,9 +14,10 @@ trigger:
 pr:
   branches:
     include:
-    - codelab/3-build
+    - main
   paths:
     include:
+    - src/BuildingBlocks/Common/*
     - src/Services/Catalogue/*
 jobs:
 - template: ../buildimages.yml

@@ -8,19 +8,18 @@ namespace Catalogue.API.UseCases
 {
     public class ProduitFetcher : IProduitFetcher
     {
-        private readonly IProduitRepository iProduitRepository;
+        private readonly IFamilleRepository iProduitRepository;
 
-        public ProduitFetcher(IProduitRepository iProduitRepository)
+        public ProduitFetcher(IFamilleRepository iProduitRepository)
         {
             this.iProduitRepository = iProduitRepository;
         }
 
-        public async Task<IDictionary<Famille, IEnumerable<Produit>>> GroupByFamilles()
+        public async Task<Dictionary<string, ICollection<Produit>>> GroupByFamilles()
         {
-            IEnumerable<Produit> produits = await iProduitRepository.GetAll();
+            IEnumerable<Famille> familles = await iProduitRepository.GetAll();
 
-            return produits.GroupBy(produit => produit.Famille)
-                           .ToDictionary(group => group.Key, group => group.AsEnumerable());
+            return familles.ToDictionary(group => group.Nom, group => group.Produits);
         }
     }
 }

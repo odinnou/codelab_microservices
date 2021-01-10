@@ -3,12 +3,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Catalogue.API.Infrastructure.Migrations
 {
-    public partial class AjoutEntiteProduit : Migration
+    public partial class AjoutEntitesFamilleProduit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "famille",
+                name: "familles",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -17,7 +17,7 @@ namespace Catalogue.API.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_famille", x => x.id);
+                    table.PrimaryKey("pk_familles", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -28,17 +28,17 @@ namespace Catalogue.API.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     reference = table.Column<string>(type: "text", nullable: false),
                     libelle = table.Column<string>(type: "text", nullable: false),
-                    famille_id = table.Column<int>(type: "integer", nullable: true)
+                    famille_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_produits", x => x.id);
                     table.ForeignKey(
-                        name: "fk_produits_famille_famille_id",
+                        name: "fk_produits_familles_famille_id",
                         column: x => x.famille_id,
-                        principalTable: "famille",
+                        principalTable: "familles",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -53,7 +53,7 @@ namespace Catalogue.API.Infrastructure.Migrations
                 name: "produits");
 
             migrationBuilder.DropTable(
-                name: "famille");
+                name: "familles");
         }
     }
 }

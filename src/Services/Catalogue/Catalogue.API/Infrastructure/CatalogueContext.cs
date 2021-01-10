@@ -10,13 +10,7 @@ namespace Catalogue.API.Infrastructure
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Famille>();
-        }
-
+        public DbSet<Famille> Familles { get; set; }
         public DbSet<Produit> Produits { get; set; }
     }
 }
