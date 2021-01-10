@@ -1,7 +1,10 @@
+using Common.API.Documentation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Panier.API.Configuration;
+using System.Text.Json.Serialization;
 
 namespace Panier.API
 {
@@ -22,13 +25,22 @@ namespace Panier.API
             Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
 
             services.AddAuthentications(appSettings);
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+            services.AddSwagger(appSettings.DeployedVersion);
+
             services.AddDependencies(appSettings);
             services.AddHttpContextAccessor();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IOptions<AppSettings> appSettings)
         {
+            if (appSettings.Value.EnableSwagger)
+            {
+                app.UseSwaggerConfig(appSettings.Value.DeployedVersion, appSettings.Value.RoutePrefix, appSettings.Value.HttpRequestScheme);
+            }
+
             app.UseRouting();
 
             app.UseAuthentication();
