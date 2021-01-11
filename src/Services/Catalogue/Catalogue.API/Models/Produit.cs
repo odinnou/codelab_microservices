@@ -10,7 +10,7 @@ namespace Catalogue.API.Models
         public string Reference { get; set; }
         public string Libelle { get; set; }
 
-        [JsonIgnore]
+        [JsonIgnore] // Habituellement je ferai un DTO contenant exclusivement Id/Reference/Libelle, mais ce n'est pas le sujet de la démo
         public virtual Famille Famille { get; set; }
     }
 }
