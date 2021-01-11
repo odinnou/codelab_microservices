@@ -66,6 +66,13 @@ docker volume create --name=formation-sqldata
 Ajout d'une interface Swagger via un "Building Blocks" (en condition réel, il devrait être déposé sur un nuget privé)
 Accessible via : http://localhost:{port}/index.html sur toutes les APIs
 
+Création d'une migration
+
+```
+PM> Add-Migration 001 -OutputDir "Data/Migrations"
+```
+
+Accès à l'API de test
 ```
 curl -X GET 'http://localhost:37001/produit'
 ```
