@@ -64,6 +64,7 @@ namespace Catalogue.API.Infrastructure.Migrations
                 .RuleFor(famille => famille.Famille, fake => fake.PickRandom(familles))
                 .RuleFor(famille => famille.Libelle, fake => fake.Commerce.ProductName())
                 .RuleFor(famille => famille.Reference, fake => fake.Commerce.Ean13())
+                .RuleFor(famille => famille.IsAvailable, fake => fake.IndexFaker % 2 == 0)
                 .Generate(10000);
         }
 

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package Catalogue.API;
+
+message CheckDisponibilityRequest {
+	string reference = 1;
+}
+
+message CheckDisponibilityResponse {
+	bool is_available = 1;
+}
+
+service ProduitProducer {
+  rpc CheckDisponibilityByReference (CheckDisponibilityRequest) returns (CheckDisponibilityResponse) {}
+}

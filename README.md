@@ -76,3 +76,21 @@ Accès à l'API de test
 ```
 curl -X GET 'http://localhost:37001/produit'
 ```
+
+## 6 - gRPC
+
+Exposer le port 81 au niveau du startup, du dockerfile et du docker-compose de Catalogue.API
+
+```
+EXPOSE 81
+```
+
+```
+- "37011:81"
+```
+
+Créer le .proto et le faire compiler par Visual Studio pour la partie serveur (Catalogue.API)
+
+```
+<Protobuf Include="Protos\produit.proto" GrpcServices="Server" />
+```

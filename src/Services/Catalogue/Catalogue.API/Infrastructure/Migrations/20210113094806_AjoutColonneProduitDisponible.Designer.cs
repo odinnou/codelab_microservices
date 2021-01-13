@@ -2,15 +2,17 @@
 using Catalogue.API.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Catalogue.API.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogueContext))]
-    partial class CatalogueContextModelSnapshot : ModelSnapshot
+    [Migration("20210113094806_AjoutColonneProduitDisponible")]
+    partial class AjoutColonneProduitDisponible
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

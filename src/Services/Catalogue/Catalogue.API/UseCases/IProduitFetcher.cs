@@ -7,5 +7,6 @@ namespace Catalogue.API.UseCases
     public interface IProduitFetcher
     {
         Task<Dictionary<string, ICollection<Produit>>> GroupByFamilles();
+        Task<Produit> GetByReference(string reference);
     }
 }
