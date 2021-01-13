@@ -22,7 +22,7 @@ namespace Catalogue.API.UseCases
         {
             Produit? produit = await iProduitRepository.GetByReference(reference);
 
-            if(produit == null)
+            if (produit == null)
             {
                 throw new ProduitNotFoundException(reference);
             }

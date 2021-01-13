@@ -4,6 +4,7 @@ namespace Panier.API.Configuration
     {
         public CacheConfiguration CacheConfiguration { get; set; }
         public AuthorityConfiguration AuthorityConfiguration { get; set; }
+        public CatalogueServiceConfiguration CatalogueServiceConfiguration { get; set; }
         public string RoutePrefix { get; set; }
         public bool EnableSwagger { get; set; }
         public string HttpRequestScheme { get; set; }
@@ -21,5 +22,10 @@ namespace Panier.API.Configuration
         public string ConnectionString { get; set; }
         public string InstanceName { get; set; }
         public int TimeToLive { get; set; }
+    }
+
+    public class CatalogueServiceConfiguration
+    {
+        public string Url { get; set; }
     }
 }
