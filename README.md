@@ -94,3 +94,7 @@ Créer le .proto et le faire compiler par Visual Studio pour la partie serveur (
 ```
 <Protobuf Include="Protos\produit.proto" GrpcServices="Server" />
 ```
+
+Test via l'app BloomRPC
+
+![Test via l'app BloomRPC](https://i.ibb.co/1XpgpwW/Capture.png)
