@@ -3,22 +3,21 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Panier.API.Configuration;
 using Panier.API.Models;
+using Panier.API.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Panier.API.UseCases.PanierManager
 {
-    public class StatelessPanierManager : IPanierManager
+    public class StatelessPanierManager : APanierManager, IPanierManager
     {
         private readonly IDistributedCache iDistributedCache;
         private readonly DistributedCacheEntryOptions distributedCacheEntryOptions;
-        private readonly IClaimAccessor iClaimAccessor;
 
-        public StatelessPanierManager(IDistributedCache iDistributedCache, IOptions<AppSettings> appSettings, IClaimAccessor iClaimAccessor)
+        public StatelessPanierManager(IDistributedCache iDistributedCache, IOptions<AppSettings> appSettings, IClaimAccessor iClaimAccessor, ICatalogueApiConsumer iCatalogueApiConsumer) : base(iClaimAccessor, iCatalogueApiConsumer)
         {
             this.iDistributedCache = iDistributedCache;
-            this.iClaimAccessor = iClaimAccessor;
             distributedCacheEntryOptions = new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(appSettings.Value.CacheConfiguration.TimeToLive) };
         }
 
@@ -26,20 +25,20 @@ namespace Panier.API.UseCases.PanierManager
 
         public async Task<List<PanierItem>> Append(PanierItem panierItem)
         {
+            await CheckProduitDisponibility(panierItem.Product);
+
             List<PanierItem> items = await Fetch();
 
             items.Add(panierItem);
 
-            string userId = iClaimAccessor.GetUidFromClaims();
-            await iDistributedCache.SetStringAsync(userId, JsonConvert.SerializeObject(items), distributedCacheEntryOptions);
+            await StoreItemsInDistributedCache(items);
 
             return items;
         }
 
         public async Task<List<PanierItem>> Fetch()
         {
-            string userId = iClaimAccessor.GetUidFromClaims();
-            string serialized = await iDistributedCache.GetStringAsync(userId);
+            string serialized = await GetItemsFromDistributedCache();
 
             if (string.IsNullOrWhiteSpace(serialized))
             {
@@ -47,6 +46,19 @@ namespace Panier.API.UseCases.PanierManager
             }
 
             return JsonConvert.DeserializeObject<List<PanierItem>>(serialized);
+        }
+
+        private async Task StoreItemsInDistributedCache(List<PanierItem> items)
+        {
+            string userId = iClaimAccessor.GetUidFromClaims();
+
+            await iDistributedCache.SetStringAsync(userId, JsonConvert.SerializeObject(items), distributedCacheEntryOptions);
+        }
+
+        private async Task<string> GetItemsFromDistributedCache()
+        {
+            string userId = iClaimAccessor.GetUidFromClaims();
+            return await iDistributedCache.GetStringAsync(userId);
         }
     }
 }

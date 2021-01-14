@@ -1,24 +1,25 @@
 using Panier.API.Models;
+using Panier.API.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Panier.API.UseCases.PanierManager
 {
-    public class StatefulPanierManager : IPanierManager
+    public class StatefulPanierManager : APanierManager, IPanierManager
     {
         private readonly PanierCache panierCache;
-        private readonly IClaimAccessor iClaimAccessor;
 
-        public StatefulPanierManager(PanierCache panierCache, IClaimAccessor iClaimAccessor)
+        public StatefulPanierManager(PanierCache panierCache, IClaimAccessor iClaimAccessor, ICatalogueApiConsumer iCatalogueApiConsumer) : base(iClaimAccessor, iCatalogueApiConsumer)
         {
             this.panierCache = panierCache;
-            this.iClaimAccessor = iClaimAccessor;
         }
 
         public CacheMode CacheMode => CacheMode.Stateful;
 
-        public Task<List<PanierItem>> Append(PanierItem panierItem)
+        public async Task<List<PanierItem>> Append(PanierItem panierItem)
         {
+            await CheckProduitDisponibility(panierItem.Product);
+
             string userId = iClaimAccessor.GetUidFromClaims();
 
             if (!panierCache.Content.ContainsKey(userId))
@@ -28,7 +29,7 @@ namespace Panier.API.UseCases.PanierManager
 
             panierCache.Content[userId].Add(panierItem);
 
-            return Fetch();
+            return await Fetch();
         }
 
         public Task<List<PanierItem>> Fetch()

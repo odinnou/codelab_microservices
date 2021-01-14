@@ -31,6 +31,7 @@ namespace Panier.API
             services.AddSwagger(appSettings.DeployedVersion);
 
             services.AddDependencies(appSettings);
+            services.AddThirdParties(appSettings);
             services.AddHttpContextAccessor();
         }
 

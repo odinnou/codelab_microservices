@@ -1,4 +1,5 @@
 using Catalogue.API.Configuration;
+using Catalogue.API.Grpc;
 using Catalogue.API.Infrastructure.Migrations;
 using Common.API.Documentation;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +25,8 @@ namespace Catalogue.API
             AppSettings appSettings = new AppSettings();
             Configuration.GetSection(nameof(AppSettings)).Bind(appSettings);
 
+            services.AddGrpc();
+
             services.AddControllers();
 
             services.AddSwagger(appSettings.DeployedVersion);
@@ -43,6 +46,7 @@ namespace Catalogue.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGrpcService<ProduitService>();
             });
         }
     }

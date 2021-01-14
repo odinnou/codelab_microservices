@@ -21,6 +21,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "37001:80"
+      - "37011:81"
 
   panier-api-1:
     environment:
