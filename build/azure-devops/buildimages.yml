@@ -45,7 +45,7 @@ jobs:
 
         mkdir -p ${{ parameters.to }}
 
-        if [ $(Build.SourceBranchName) == "main" ]
+        if [ $(Build.SourceBranchName) == "3-build" ]
         then
         tag="develop"
         echo "##vso[task.setvariable variable=imageTag]$tag"
@@ -104,7 +104,7 @@ jobs:
       projects: '**/*.sln'
       arguments: '--no-restore -v q'
   - script: 'dotnet test ./codelab_microservices.sln -v m --no-build -l trx -r $(Agent.BuildDirectory)/results_sonar /p:CollectCoverage=true /p:Exclude=''[xunit.*]*'' /p:CoverletOutputFormat=''json%2copencover'' /p:CoverletOutput=$(Agent.BuildDirectory)/results_sonar/coverage /p:MergeWith=''$(Agent.BuildDirectory)/results_sonar/coverage.json'''
-    displayName: Tests for main
+    displayName: Tests for codelab/3-build
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], '3-build'))
   - script: 'dotnet test ./codelab_microservices.sln -v m --no-build -l trx -r $(Agent.BuildDirectory)/results_sonar /p:CollectCoverage=true /p:Exclude=''[xunit.*]*'' /p:CoverletOutputFormat=''json%2copencover'' /p:CoverletOutput=$(Agent.BuildDirectory)/results_sonar/coverage /p:MergeWith=''$(Agent.BuildDirectory)/results_sonar/coverage.json'''
     displayName: Tests for Main
@@ -128,7 +128,7 @@ jobs:
       sourceFolder: ${{ parameters.from }}
       targetFolder: ${{ parameters.to }}
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Build Artifact for main'
+    displayName: 'Publish Build Artifact for codelab/3-build'
     inputs:
       pathtoPublish: ${{ parameters.to }}
       artifactName: release
