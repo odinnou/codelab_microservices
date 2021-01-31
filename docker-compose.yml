@@ -30,3 +30,15 @@ services:
       dockerfile: src/Services/Panier/Panier.API/Dockerfile
     depends_on:
       - cache-data
+
+  commande-api-1:
+    image: commande-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Commande/Commande.API/Dockerfile
+
+  commande-api-2:
+    image: commande-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Commande/Commande.API/Dockerfile

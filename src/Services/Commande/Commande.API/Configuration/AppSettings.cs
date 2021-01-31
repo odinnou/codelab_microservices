@@ -1,10 +1,8 @@
-namespace Panier.API.Configuration
+namespace Commande.API.Configuration
 {
     public class AppSettings
     {
-        public CacheConfiguration CacheConfiguration { get; set; }
         public AuthorityConfiguration AuthorityConfiguration { get; set; }
-        public CatalogueServiceConfiguration CatalogueServiceConfiguration { get; set; }
         public KafkaConfiguration KafkaConfiguration { get; set; }
         public string RoutePrefix { get; set; }
         public bool EnableSwagger { get; set; }
@@ -18,20 +16,9 @@ namespace Panier.API.Configuration
         public string Audience { get; set; }
     }
 
-    public class CacheConfiguration
-    {
-        public string ConnectionString { get; set; }
-        public string InstanceName { get; set; }
-        public int TimeToLive { get; set; }
-    }
-
-    public class CatalogueServiceConfiguration
-    {
-        public string Url { get; set; }
-    }
-
     public class KafkaConfiguration
     {
         public string Brokers { get; set; }
+        public string ConsumerGroup { get; set; }
     }
 }

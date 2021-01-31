@@ -35,6 +35,18 @@ services:
     ports:
       - "37003:80"
 
+  commande-api-1:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "37004:80"
+
+  commande-api-2:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "37005:80"
+
 volumes:
   formation-sqldata:
     external: true
