@@ -12,6 +12,10 @@ Surcharge du appsettings.json via la syntaxe spécifique ASP.NET.
 curl -X GET 'http://localhost:37001/demo'
 ```
 
+### Pour aller plus loin :
+1. Ajouter une nouvelle classe de configuration dans **AppSettings.cs**.
+2. "Piloter" le contenu de cette nouvelle classe à parir des variables d'environnements.
+
 ## 2 - panier Stateless vs panier Stateful
 
 Utilisation d'un cache Redis pour partager de la donnée éphémère.
@@ -29,3 +33,7 @@ dotnet build/test, docker build/push
 docker run --rm --name catalogue -e AppSettings__Ttl=1337 -d -p 8085:80 odinnou/catalogue-api:0.0.5
 curl -X GET 'http://localhost:8085/demo'
 ```
+
+### Pour aller plus loin :
+1. Faire un script de build pour "panier-api".
+2. Créer une pull-request sur le Github pour ajouter une analyse Sonarcloud.
