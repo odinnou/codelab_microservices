@@ -12,6 +12,10 @@ Surcharge du appsettings.json via la syntaxe spécifique ASP.NET.
 curl -X GET 'http://localhost:37001/demo'
 ```
 
+### Pour aller plus loin :
+1. Ajouter une nouvelle classe de configuration dans **AppSettings.cs**.
+2. "Piloter" le contenu de cette nouvelle classe à parir des variables d'environnements.
+
 ## 2 - panier Stateless vs panier Stateful
 
 Utilisation d'un cache Redis pour partager de la donnée éphémère.
